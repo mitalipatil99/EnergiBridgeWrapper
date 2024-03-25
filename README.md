@@ -1,8 +1,14 @@
+This readme contains two sections, the first section is EnergiBridge wrapper's readme, the second section is the original readme from [EnergiBridge](https://github.com/tdurieux/EnergiBridge/tree/main). 
+# EnergiBridge Wrapper
+
+
+
+
+
+
 # EnergiBridge
 
 [![Release](https://github.com/tdurieux/EnergiBridge/actions/workflows/release.yml/badge.svg)](https://github.com/tdurieux/EnergiBridge/actions/workflows/release.yml) [![GitHub Release](https://img.shields.io/github/v/release/tdurieux/EnergiBridge)](https://github.com/tdurieux/EnergiBridge/releases)
-
-
 
 Energibridge is a cross-platform energy measurement utility that provides support for Linux, Windows, and MacOS, as well as Intel, AMD, and Apple ARM CPU architectures.
 
@@ -10,9 +16,9 @@ This tool is designed to collect resource usage data for a command to execute an
 
 | OS      | Intel CPU | AMD CPU | M1 CPU | Intel GPU | Nvidia GPU | AMD GPU | M1 GPU |
 | ------- | --------- | ------- | ------ | --------- | ---------- | ------- | ------ |
-| Linux   | ✅        |   ✅    |        |           |    ✅      |         |        |
-| Windows | ✅        |   ✅    |        |           |    ✅      |         |        |
-| Mac     | ✅        |         |   ✅   |    ✅     |            |    ✅   |   ✅   |
+| Linux   | ✅        | ✅      |        |           | ✅         |         |        |
+| Windows | ✅        | ✅      |        |           | ✅         |         |        |
+| Mac     | ✅        |         | ✅     | ✅        |            | ✅      | ✅     |
 
 ## Requirements
 
@@ -28,8 +34,8 @@ Depending on your hardware you need different dependencies.
 
 Install LibreHardwareMonitor to access the CPU registry.
 
-
 In an elevated (Administrator) command line (e.g. cmd.exe):
+
 ```
 Create:
 sc create rapl type=kernel binPath="<absolute_path_to_LibreHardwareMonitor.sys>"
