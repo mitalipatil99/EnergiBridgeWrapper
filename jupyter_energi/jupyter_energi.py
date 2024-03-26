@@ -104,15 +104,13 @@ def run(program=None, cumulative=False, no_runs=1):
         else:
             with open('temp.py', 'w') as f:
                 f.write(program)
-
         current_directory = os.getcwd()
         path = os.path.join(current_directory, 'temp.py')
         for i in range(no_runs):
             subprocess.run(['chmod', '+x', path ])
             # Run the temporary file with energibridge as a subprocess
             energibridge_executable = "../target/release/energibridge"
-            command = [energibridge_executable, '-o', '../temp.csv', '--summary', 'python3', path]
-            result = subprocess.run((command), capture_output=True,
+            result = subprocess.run([energibridge_executable, '-o', 'temp.csv', '--summary', 'python3', path], capture_output=True,
                         text=True)
             print(result.stdout)
             print(result.stderr)
@@ -123,7 +121,7 @@ def run(program=None, cumulative=False, no_runs=1):
                 try:
                     # data = np.genfromtxt('../temp.csv', delimiter=',')
                     # data = np.array(data)
-                    data.append(pd.read_csv('../temp.csv'))
+                    data.append(pd.read_csv('temp.csv'))
                     print("Data loaded successfully.")
                 except Exception as e:
                     print("Error loading data:", e)
