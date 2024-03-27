@@ -39,7 +39,7 @@ def extract_time_and_power(dataset, cumulative=False):
     return res
 
 
-def make_violin_plot(time_power_dataset):
+def make_violin_plot(time_power_dataset, std_dev=None):
     data = []
     # extract joul data from time_power_dataset
     for time_power in time_power_dataset:
@@ -48,6 +48,11 @@ def make_violin_plot(time_power_dataset):
         # multiply power usage by delta time to get energy usage
         power += power * (time / 1000)
         data.append(np.sum(power))
+    if std_dev is not None:
+        # get all indexes of data entries that are more than 3 standard deviations away from the mean
+        outliers = np.where(np.abs(data - np.mean(data)) > 1 * np.std(data))
+        # remove indexes from time_power_dataset
+        data = np.delete(data, outliers, axis=0)
     fig, ax = plt.subplots()
     # Create the violin plot
     violins = ax.violinplot(
