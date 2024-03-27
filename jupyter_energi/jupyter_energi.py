@@ -69,6 +69,8 @@ def make_time_series_plot(time_power_dataset, cumulative=False):
             time = np.cumsum(time) / 1000
         plt.plot(time, power)
 
+    # add legend
+    plt.legend([f'Run {i+1}' for i in range(len(time_power_dataset))])
     plt.xlabel('Time (s)')
     plt.ylabel('Power (W)')
     plt.title(f'Power vs Time, cumulative={cumulative}')
@@ -136,12 +138,13 @@ def run(program=None, no_runs=1):
             # run the temporary file with energibridge.exe as admin
             res = subprocess.run(['../target/release/energibridge.exe', '-o', 'temp.csv', '--summary', 'py', 'temp.py'], capture_output=True,
                         text=True)
-            print(res.stdout)
-            print(res.stderr)
+            if res.stdout is not None: print(res.stdout)
+            if res.stderr is not None: print(res.stderr)
             # get data from temp.csv with pandas and append it to the dataframe
             data.append(pd.read_csv('temp.csv'))
 
         os.remove('temp.py')
+        os.remove('temp.csv')
 
     else:
         raise NotImplementedError(f"Unsupported operating system: {current_os}")
