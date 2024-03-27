@@ -12,51 +12,69 @@ import matplotlib.pyplot as plt
 
 def extract_time_and_power(dataset, cumulative=False):
     res = []
-    if platform.system().lower() == 'darwin':
-        for data in dataset:
-            data = data[1:]
-            # change the data to numpy array
-            data = np.array(data)
-            # keep only the power data and delta time
-            time = data[:, 0]
-            power = data[:, 18]
-            if cumulative:
-                time = np.cumsum(time) / 1_000
-            if cumulative:
-                power = np.cumsum(power)
-                power = power[0:-1]
-                time = time[0:-1]
-            else:
-                power = power[1:-1]
-                time = time[1:-1]
-            #make numpy array from time and power
-            res.append(np.column_stack((time, power)))
-    else:
-        for data in dataset:
-            # get rid of header
-            data = data[1:]
-            # change the data to numpy array
-            data = np.array(data)
-            # keep only the power data and delta time
-            time = data[:, 0]
-            power = data[:, 27]
-            # accumulate the time
-
-            # make diff of power
+    index = 18 if platform.system().lower() == 'darwin' else 27
+    for data in dataset:
+        # get rid of header
+        data = data[1:]
+        # change the data to numpy array
+        data = np.array(data)
+        # keep only the power data and delta time
+        time = data[:, 0]
+        power = data[:, index]
+        # make diff of power
+        if not platform.system().lower() == 'darwin':
             power = np.diff(power)
-            # insert 0 at the beginning
-            power = np.insert(power, 0, 0)
-            if cumulative:
-                time = np.cumsum(time) / 1_000
-                power = np.cumsum(power)
-                power = power[0:-1]
-                time = time[0:-1]
-            else:
-                power = power[1:-1]
-                time = time[1:-1]
-            #make numpy array from time and power
-            res.append(np.column_stack((time, power)))
+        # insert 0 at the beginning
+        power = np.insert(power, 0, 0)
+        if cumulative:
+            time = np.cumsum(time) / 1_000
+            power = np.cumsum(power)
+            power = power[0:-1]
+            time = time[0:-1]
+        else:
+            power = power[1:-1]
+            time = time[1:-1]
+        #make numpy array from time and power
+        res.append(np.column_stack((time, power)))
     return res
+
+
+def make_violin_plot(time_power_dataset):
+    data = []
+    # extract joul data from time_power_dataset
+    for time_power in time_power_dataset:
+        time = time_power[:, 0]
+        power = time_power[:, 1]
+        # multiply power usage by delta time to get energy usage
+        power += power * (time / 1000)
+        data.append(np.sum(power))
+    fig, ax = plt.subplots()
+    # Create the violin plot
+    violins = ax.violinplot(
+        data,
+        showextrema=False)
+
+    for pc in violins['bodies']:
+        pc.set_facecolor('white')
+        pc.set_edgecolor('black')
+        pc.set_linewidth(0.6)
+        pc.set_alpha(1)
+
+    # Create the boxplot
+    lineprops = dict(linewidth=0.5)
+    medianprops = dict(color='black')
+    ax.boxplot(
+        data,
+        whiskerprops=lineprops,
+        boxprops=lineprops,
+        medianprops=medianprops)
+
+    # Style
+    ax.spines['right'].set_visible(False)
+    ax.spines['top'].set_visible(False)
+    ax.set_ylabel("Energy Consumption (J)")
+
+    plt.show()
 
 
 def make_time_series_plot(time_power_dataset, cumulative=False):
@@ -68,27 +86,11 @@ def make_time_series_plot(time_power_dataset, cumulative=False):
             power = power * (time / 100)
             time = np.cumsum(time) / 1000
         plt.plot(time, power)
-
     # add legend
     plt.legend([f'Run {i+1}' for i in range(len(time_power_dataset))])
     plt.xlabel('Time (s)')
     plt.ylabel('Power (W)')
     plt.title(f'Power vs Time, cumulative={cumulative}')
-    plt.show()
-
-
-def make_violin_plot(time_power_dataset, cumulative=False):
-    data = []
-    for time_power in time_power_dataset:
-        time = time_power[:, 0]
-        power = time_power[:, 1]
-        if not cumulative:
-            # multiply power usage by delta time to get energy usage
-            power = power * (time / 100)
-        data.append(power)
-    plt.violinplot(data)
-    plt.ylabel('Power (W)')
-    plt.title(f'Power violin plot, cumulative={cumulative}')
     plt.show()
 
 
