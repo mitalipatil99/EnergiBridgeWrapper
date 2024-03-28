@@ -199,3 +199,12 @@ time_and_power = jupyter_energi.extract_time_and_power(data, cumulative=cumulati
 jupyter_energi.make_time_series_plot(time_and_power, cumulative=cumulative)
 jupyter_energi.make_violin_plot(time_and_power, cumulative=cumulative)
 ```
+
+## Recommendation to collect unbiased energy data
+
+To minimise the confounding factors that affect the energy measurements of your software program , we recommmend some strategies:
+- remove uncessary services running in the background.
+- Turn off notifications and Bluetooth.
+- Avoid connecting to external hardware if not required.
+- To see how changes in the code affect the energy coonsumption, freeze your settings. For e.g the brightness and resolution of your screen should be fixed.  
+
