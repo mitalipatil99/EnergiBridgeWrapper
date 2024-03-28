@@ -24,8 +24,9 @@ def extract_time_and_power(dataset, cumulative=False):
         # make diff of power
         if not platform.system().lower() == 'darwin':
             power = np.diff(power)
-        # insert 0 at the beginning
-        power = np.insert(power, 0, 0)
+            # insert 0 at the beginning
+            power = np.insert(power, 0, 0)
+
         if cumulative:
             time = np.cumsum(time) / 1_000
             power = np.cumsum(power)
