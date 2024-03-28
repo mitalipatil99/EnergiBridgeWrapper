@@ -28,7 +28,6 @@ def extract_and_write_code(notebook_path, start_marker, end_marker):
 
 
 #params
-notebook_path = 'Demo.ipynb'
 start_marker = '#EnergiBridgeStart'
 end_marker = '#EnergiBridgeStop'
 

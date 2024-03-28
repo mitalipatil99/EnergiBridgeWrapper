@@ -10,6 +10,9 @@ from extract_code import *
 import matplotlib.pyplot as plt
 
 
+notebook_path = 'Demo.ipynb'
+
+
 def extract_time_and_power(dataset, cumulative=False):
     res = []
     index = 18 if platform.system().lower() == 'darwin' else 27
