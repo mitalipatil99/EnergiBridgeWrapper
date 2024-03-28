@@ -132,6 +132,7 @@ To use `jupyter_energi` simply import it into a Jupyter notebook.
 > [!IMPORTANT]
 Code you want to measure the energy consumption of should be wholly self-contained when passed to `jupyter_energi`.
 This means that any import statements needed should also be contained.
+Furthermore, as EnergiBridge needs to be run as admin, Jupyter Notebook should also be opened as admin.
 
 Code of which you want to measure the energy consumption can be specified in two ways:
 
