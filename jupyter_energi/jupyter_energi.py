@@ -44,6 +44,12 @@ def extract_time_and_power(dataset, cumulative=False):
 
 
 def make_violin_plot(time_power_dataset, std_dev=None):
+    '''
+    Make a violin plot of the energy consumption of the time_power_dataset
+    :param time_power_dataset:
+    :param std_dev: remove outliers that are more than std_dev standard deviations away from the mean
+    :return:
+    '''
     data = []
     # extract joul data from time_power_dataset
     for time_power in time_power_dataset:
@@ -153,9 +159,10 @@ def run(program=None, no_runs=1):
             if res.stderr is not None: print(res.stderr)
             # get data from temp.csv with pandas and append it to the dataframe
             data.append(pd.read_csv('temp.csv'))
+            os.remove('temp.csv')
 
         os.remove('temp.py')
-        os.remove('temp.csv')
+
 
     else:
         raise NotImplementedError(f"Unsupported operating system: {current_os}")
